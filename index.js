@@ -6,6 +6,10 @@ const Filestore = require('session-file-store')(session);
 const flash = require('express-flash');
 const app = express();
 const conn = require('./db/conn.js');
+const Thought = require('./models/Thought.js');
+const User = require('./models/User.js');
+const toughtsRoutes = require('./routes/toughtsRoutes');
+const ToughtController = require("./controllers/ToughtsController");
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
@@ -36,6 +40,8 @@ app.use((req, res, next) => {
     }
     next();
 });
+app.use("/toughts", toughtsRoutes);
+app.get('/', ToughtController.showThoughts);
 conn
     .sync()
     .then(() => {

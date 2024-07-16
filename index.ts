@@ -10,6 +10,14 @@ const app = express()
 // database
 const conn = require('./db/conn.js')
 
+// Models
+const Thought = require('./models/Thought.js')
+const User = require('./models/User.js')
+
+// Import Routes
+const toughtsRoutes = require('./routes/toughtsRoutes')
+const ToughtController = require("./controllers/ToughtsController");
+
 // handlebars config
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars')
@@ -58,6 +66,11 @@ app.use((req: { session: { userid: any } }, res: { locals: { session: any } }, n
 
     next()
 })
+
+// Routes
+app.use("/toughts", toughtsRoutes);
+app.get('/', ToughtController.showThoughts)
+
 
 
 // database connection
