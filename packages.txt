@@ -1,0 +1,36 @@
+npm install bcryptjs connect-flash cookie-parser cookie-session express express-flash express-session mysql2 sequelize nodemon session-file-store 
+
+finalidade de cada pacote:
+
+bcryptjs:
+Serve para criptografar senhas. Utilizado para garantir que as senhas dos usuários sejam armazenadas de forma segura no banco de dados. O bcryptjs é uma implementação em JavaScript puro da biblioteca bcrypt.
+
+connect-flash:
+Utilizado para armazenar mensagens temporárias na sessão de um usuário. Muito comum em aplicações web para exibir mensagens de sucesso ou erro após redirecionamentos.
+
+cookie-parser:
+Middleware do Express usado para analisar cookies anexados às solicitações do cliente. Ele coloca o conteúdo dos cookies na propriedade req.cookies.
+
+cookie-session:
+Middleware para o Express que usa cookies para armazenar a sessão do usuário em vez de armazená-la no servidor. É útil para aplicações que não precisam armazenar grandes quantidades de dados na sessão.
+
+express:
+Um framework web rápido, flexível e minimalista para Node.js. Fornece um conjunto robusto de funcionalidades para criar servidores web e APIs.
+
+express-flash:
+Uma versão específica do connect-flash para o Express, permitindo que mensagens temporárias sejam exibidas em aplicações baseadas no Express.
+
+express-session:
+Middleware que fornece uma solução de gerenciamento de sessões em aplicações Express. Ele armazena a sessão no servidor, utilizando diferentes mecanismos de armazenamento (por exemplo, na memória, em bancos de dados).
+
+mysql2:
+Um cliente MySQL para Node.js, oferecendo suporte a Promises e ao async/await, além de ser mais rápido e com menos bugs do que a biblioteca mysql.
+
+sequelize:
+Um ORM (Object-Relational Mapping) para Node.js que suporta vários bancos de dados SQL, como MySQL, PostgreSQL, SQLite e MSSQL. Facilita a manipulação de dados de bancos de dados relacionais em aplicações Node.js.
+
+nodemon:
+Uma ferramenta que monitora as alterações nos arquivos de um projeto Node.js e reinicia automaticamente o servidor. Facilita o desenvolvimento, eliminando a necessidade de reiniciar manualmente o servidor após cada alteração no código.
+
+session-file-store:
+Um armazenamento de sessões baseado em arquivos para o middleware express-session. Permite armazenar sessões em arquivos no servidor, útil para desenvolvimento ou pequenos projetos que não exigem armazenamento de sessão em bancos de dados.
