@@ -9,6 +9,8 @@ router.get('/logout', AuthController.logout)
 
 // Post route(for register or login on database)
 router.post('/register', AuthController.registerPost)
+router.post('/login', AuthController.loginPost)
+
 
 
 module.exports = router
