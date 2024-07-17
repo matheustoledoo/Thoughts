@@ -2,14 +2,16 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-const Filestore = require('session-file-store')(session);
+const FileStore = require('session-file-store')(session);
 const flash = require('express-flash');
 const app = express();
 const conn = require('./db/conn.js');
 const Thought = require('./models/Thought.js');
 const User = require('./models/User.js');
 const toughtsRoutes = require('./routes/toughtsRoutes');
+const authRoutes = require('./routes/authRoutes');
 const ToughtController = require("./controllers/ToughtsController");
+const authController = require('./controllers/authController.js');
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
@@ -18,20 +20,20 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 app.use(session({
-    name: "session",
-    secret: "we_secret",
+    name: 'session',
+    secret: 'nosso_secret',
     resave: false,
     saveUninitialized: false,
-    store: new Filestore({
+    store: new FileStore({
         logFn: function () { },
-        path: require('path').join(require('os').tmpdir(), 'sessions')
+        path: require('path').join(require('os').tmpdir(), 'sessions'),
     }),
     cookie: {
         secure: false,
-        maxAge: 360000,
-        expires: new Date(Date.now(), 360000),
-        httpOnly: true
-    }
+        maxAge: 3600000,
+        expires: new Date(Date.now() + 3600000),
+        httpOnly: true,
+    },
 }));
 app.use(flash());
 app.use((req, res, next) => {
@@ -41,6 +43,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use("/toughts", toughtsRoutes);
+app.use('/', authRoutes);
 app.get('/', ToughtController.showThoughts);
 conn
     .sync()

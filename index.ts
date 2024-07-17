@@ -1,7 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
-const Filestore = require('session-file-store')(session)
+const FileStore = require('session-file-store')(session)
 const flash = require('express-flash')
 
 // express instance
@@ -16,7 +16,11 @@ const User = require('./models/User.js')
 
 // Import Routes
 const toughtsRoutes = require('./routes/toughtsRoutes')
+const authRoutes = require('./routes/authRoutes')
+
+// Import Controllers
 const ToughtController = require("./controllers/ToughtsController");
+const authController = require('./controllers/authController.js')
 
 // handlebars config
 app.engine('handlebars', exphbs.engine())
@@ -38,22 +42,22 @@ app.use(express.json())
 // session middleware
 app.use(
     session({
-        name: "session",
-        secret: "we_secret",
-        resave: false,
-        saveUninitialized: false,
-        store: new Filestore({
-            logFn: function () {},
-            path: require('path').join(require('os').tmpdir(), 'sessions')
-        }),
-        cookie: {
-            secure: false,
-            maxAge: 360000,
-            expires: new Date(Date.now(), 360000),
-            httpOnly: true
-        }
+      name: 'session',
+      secret: 'nosso_secret',
+      resave: false,
+      saveUninitialized: false,
+      store: new FileStore({
+        logFn: function () {},
+        path: require('path').join(require('os').tmpdir(), 'sessions'),
+      }),
+      cookie: {
+        secure: false,
+        maxAge: 3600000,
+        expires: new Date(Date.now() + 3600000),
+        httpOnly: true,
+      },
     }),
-)
+  )
 
 // flsh messages
 app.use(flash())
@@ -69,6 +73,7 @@ app.use((req: { session: { userid: any } }, res: { locals: { session: any } }, n
 
 // Routes
 app.use("/toughts", toughtsRoutes);
+app.use('/', authRoutes)
 app.get('/', ToughtController.showThoughts)
 
 
