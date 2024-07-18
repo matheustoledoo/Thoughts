@@ -1,10 +1,45 @@
 const Tought = require('../models/Thought')
 const User = require('../models/User')
 
+const { Op } = require('sequelize')
+
 module.exports = class ThoughtController {
 
     static async showThoughts(req, res){
-        res.render('toughts/home')
+
+        let search = ''
+
+        if(req.query.search){
+            search = req.query.search
+        }
+
+        let order = 'DESC'
+
+        if(req.query.order === 'old'){
+            order = 'ASC'
+        } else {
+            order = 'DESC'
+        }
+
+        const toughtsData = await Tought.findAll({
+            include: User,
+            // for search utilizing sequelize operator for filter word
+            where: {
+                // how to make
+                title: {[Op.like]: `%${search}%`}
+            },
+            order: [['createdAt', order]]
+        })
+
+        const toughts = toughtsData.map((result) => result.get({ plain: true}))
+
+        let toughtsQty = toughts.length
+
+        if(toughtsQty === 0){
+            toughtsQty = false
+        }
+
+        res.render('toughts/home', {toughts, search, toughtsQty})
     }
 
     static async dashboard(req, res){
